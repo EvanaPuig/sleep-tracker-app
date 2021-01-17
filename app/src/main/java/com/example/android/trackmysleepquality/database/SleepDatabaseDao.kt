@@ -44,7 +44,7 @@ interface SleepDatabaseDao {
   // Usually the ordering is ascending
   // Room returns live data which is cool!
   @Query("SELECT * FROM daily_sleep_quality_table ORDER BY nightId DESC")
-  suspend fun getAllNights(): LiveData<List<SleepNight>>
+  fun getAllNights(): LiveData<List<SleepNight>>
 
   @Query("SELECT * FROM daily_sleep_quality_table ORDER BY nightId DESC LIMIT 1")
   suspend fun getTonight(): SleepNight
