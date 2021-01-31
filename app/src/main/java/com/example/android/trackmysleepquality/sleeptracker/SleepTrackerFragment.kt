@@ -47,7 +47,7 @@ class SleepTrackerFragment : Fragment() {
 
         // Get a reference to the binding object and inflate the fragment views.
         val binding: FragmentSleepTrackerBinding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_sleep_tracker, container, false)
+            inflater, R.layout.fragment_sleep_tracker, container, false)
 
         val application = requireNotNull(this.activity).application
 
@@ -62,11 +62,14 @@ class SleepTrackerFragment : Fragment() {
         val adapter = SleepNightAdapter()
         binding.sleepList.adapter = adapter
 
-        sleepTrackerViewModel.nights.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                adapter.data = it
+        sleepTrackerViewModel.nights.observe(
+            viewLifecycleOwner,
+            Observer {
+                it?.let {
+                    adapter.data = it
+                }
             }
-        })
+        )
 
         binding.lifecycleOwner = this
 
@@ -80,7 +83,8 @@ class SleepTrackerFragment : Fragment() {
 
         })
 
-        sleepTrackerViewModel.showSnackbarEvent.observe(viewLifecycleOwner, Observer {
+        sleepTrackerViewModel.showSnackbarEvent.observe(
+            viewLifecycleOwner, Observer {
             if(it == true) {
                 Snackbar.make(
                     activity!!.findViewById(android.R.id.content),
@@ -89,7 +93,8 @@ class SleepTrackerFragment : Fragment() {
                 ).show()
                 sleepTrackerViewModel.doneShowingSnackbar()
             }
-        })
+        }
+        )
 
         return binding.root
     }
