@@ -42,12 +42,19 @@ class SleepTrackerFragment : Fragment() {
      *
      * This function uses DataBindingUtil to inflate R.layout.fragment_sleep_quality.
      */
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         // Get a reference to the binding object and inflate the fragment views.
         val binding: FragmentSleepTrackerBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_sleep_tracker, container, false)
+            inflater,
+            R.layout.fragment_sleep_tracker,
+            container,
+            false
+        )
 
         val application = requireNotNull(this.activity).application
 
@@ -55,7 +62,8 @@ class SleepTrackerFragment : Fragment() {
 
         val viewModelFactory = SleepTrackerViewModelFactory(dataSource, application)
 
-        val sleepTrackerViewModel = ViewModelProvider(this, viewModelFactory).get(SleepTrackerViewModel:: class.java)
+        val sleepTrackerViewModel = ViewModelProvider(this, viewModelFactory)
+            .get(SleepTrackerViewModel:: class.java)
 
         binding.sleepTrackerViewModel = sleepTrackerViewModel
 
@@ -73,27 +81,31 @@ class SleepTrackerFragment : Fragment() {
 
         binding.lifecycleOwner = this
 
-        sleepTrackerViewModel.navigateToSleepQuality.observe(viewLifecycleOwner, Observer { night ->
-            night?.let {
-                this.findNavController().navigate(
-                    SleepTrackerFragmentDirections
-                        .actionSleepTrackerFragmentToSleepQualityFragment(night.nightId))
-                sleepTrackerViewModel.doneNavigating()
+        sleepTrackerViewModel.navigateToSleepQuality.observe(
+            viewLifecycleOwner,
+            { night ->
+                night?.let {
+                    this.findNavController().navigate(
+                        SleepTrackerFragmentDirections
+                            .actionSleepTrackerFragmentToSleepQualityFragment(night.nightId)
+                    )
+                    sleepTrackerViewModel.doneNavigating()
+                }
             }
-
-        })
+        )
 
         sleepTrackerViewModel.showSnackbarEvent.observe(
-            viewLifecycleOwner, Observer {
-            if(it == true) {
-                Snackbar.make(
-                    activity!!.findViewById(android.R.id.content),
-                    getString(R.string.cleared_message),
-                    Snackbar.LENGTH_SHORT
-                ).show()
-                sleepTrackerViewModel.doneShowingSnackbar()
+            viewLifecycleOwner,
+            {
+                if (it == true) {
+                    Snackbar.make(
+                        activity!!.findViewById(android.R.id.content),
+                        getString(R.string.cleared_message),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                    sleepTrackerViewModel.doneShowingSnackbar()
+                }
             }
-        }
         )
 
         return binding.root

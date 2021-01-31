@@ -25,28 +25,28 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class SleepQualityViewModel (
+class SleepQualityViewModel(
     private val sleepNightKey: Long = 0L,
-    val database: SleepDatabaseDao): ViewModel() {
+    val database: SleepDatabaseDao
+) : ViewModel() {
 
-  private val _navigateToSleepTracker = MutableLiveData<Boolean?>()
+    private val _navigateToSleepTracker = MutableLiveData<Boolean?>()
 
-  val navigateToSleepTracker: LiveData<Boolean?>
-    get() = _navigateToSleepTracker
+    val navigateToSleepTracker: LiveData<Boolean?>
+        get() = _navigateToSleepTracker
 
-  fun doneNavigating() {
-    _navigateToSleepTracker.value = null
-  }
-
-  fun onSetSleepQuality(quality: Int) {
-    viewModelScope.launch {
-      withContext(Dispatchers.IO) {
-        val tonight = database.get(sleepNightKey)
-        tonight.sleepQuality = quality
-        database.update(tonight)
-      }
-      _navigateToSleepTracker.value = true
+    fun doneNavigating() {
+        _navigateToSleepTracker.value = null
     }
-  }
 
+    fun onSetSleepQuality(quality: Int) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val tonight = database.get(sleepNightKey)
+                tonight.sleepQuality = quality
+                database.update(tonight)
+            }
+            _navigateToSleepTracker.value = true
+        }
+    }
 }

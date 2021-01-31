@@ -22,14 +22,15 @@ import com.example.android.trackmysleepquality.database.SleepDatabaseDao
 import java.lang.IllegalArgumentException
 
 @Suppress("UNCHECKED_CAST")
-class SleepQualityViewModelFactory (
+class SleepQualityViewModelFactory(
     private val sleepNightKey: Long,
-    private val dataSource: SleepDatabaseDao) : ViewModelProvider.Factory {
+    private val dataSource: SleepDatabaseDao
+) : ViewModelProvider.Factory {
 
-  override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-    if (modelClass.isAssignableFrom(SleepQualityViewModel::class.java)) {
-      return SleepQualityViewModel(sleepNightKey, dataSource) as T
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(SleepQualityViewModel::class.java)) {
+            return SleepQualityViewModel(sleepNightKey, dataSource) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
-    throw IllegalArgumentException("Unknown ViewModel class")
-  }
 }
