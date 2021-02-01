@@ -32,7 +32,7 @@ interface SleepDatabaseDao {
     suspend fun update(night: SleepNight)
 
     @Query("SELECT * from daily_sleep_quality_table WHERE nightId = :key")
-    suspend fun get(key: Long): SleepNight
+    suspend fun get(key: Long): SleepNight?
 
     // This deletes a specific item and you need to know which item to remove
     @Delete
